@@ -3,33 +3,53 @@
 
 #include <Wire.h>
 #include <Adafruit_BMP085.h>
-class Pressure
+
+namespace CJKit
 {
-    Adafruit_BMP085 _bmp;
 
-public:
-    void setup()
+    /**
+     * Pressure sensor used in the CanSat Júnior Kit.
+     * All kit versions use the BMP085 sensor.
+     *
+     * This sensor continuously measures ambient pressure, and the lateste measurement can be
+     * requested with Pressure::read.
+     * Users must call Pressure::begin exactly once before any other method.
+     */
+    class Pressure
     {
-        if (!_bmp.begin())
-        {
-            Serial.println("begin fail");
-            radio.println("!!! BAD: Sensor de pressao nao encontrado. Verifica as tuas ligacoes.");
-            // beep(2000);
-            err = true;
-        }
-        else
-        {
-            // beep(100);
-            Serial.println("begin ok");
-            radio.println("OK: sensor press init");
-        }
-    }
+        Adafruit_BMP085 _bmp;
 
-    double read()
-    {
-        _bmp.readTemperature(); // won't work without it, TODO: check if library takes care of this for us
-        return _bmp.readPressure();
-    }
-} pressure;
+    public:
+        Pressure();
+
+        /**
+         * @brief Connects to and initializes pressure sensor.
+         * Must be called exactly once before any other method.
+         *
+         * Refer to sensor datasheet for the meaning of the various modes.
+         *
+         * @param mode Mode to set, ultra high-res by default.
+         * @param wire The I2C interface to use, defaults to Wire.
+         * @return Returns true if successful, false otherwise.
+         */
+        bool begin(uint8_t mode = BMP085_ULTRAHIGHRES, TwoWire *wire = &Wire);
+
+        /**
+         * @brief Read latest measured pressure from sensor in hPa.
+         *
+         * @returns Latest measured pressure in hPa.
+         */
+        int32_t readPressureHPa();
+
+        /**
+         * @brief Read latest measured temperature from sensor in ºC.
+         *
+         * @returns Latest measured temperature in ºC.
+         */
+        float readTemperatureC();
+    };
+
+}
+
 
 #endif
