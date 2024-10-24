@@ -45,8 +45,6 @@ namespace CJKit
 #error "LIBRARY BUG: unsupported kit version in RADIO_IRQ_PIN"
 #endif
 
-    const uint8_t RADIO_IRQ_PIN = 3;
-
 #if CJKIT_VERSION == 2
     const uint8_t LED_D1_PIN = 6;
     const uint8_t LED_D2_PIN = 7;
