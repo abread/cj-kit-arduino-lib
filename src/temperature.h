@@ -17,7 +17,7 @@ namespace CJKit
      *
      * Users must call the TemperatureSensorBus::begin exactly once before any other methods.
      * Temperature measurements are performed asynchronously: users must call TemperatureSensorBus::requestTemperatures
-     * to start a measurement on all sensors connected to the bus. Afterwards, they can call TemperatureSensorBus::readTemperatureForIndex
+     * to start a measurement on all sensors connected to the bus. Afterwards, they can call TemperatureSensorBus::readTemperatureCForIndex
      * to read the temperature from a sensor.
      */
     class TemperatureSensorBus
@@ -73,25 +73,25 @@ namespace CJKit
          * Starts a new temperature measurement on all sensors connected to the bus.
          *
          * Refer to the datasheet for measurement duration.
-         * The temperature can be read from each sensor with TemperatureSensorBus::readTemperatureForIndex.
+         * The temperature can be read from each sensor with TemperatureSensorBus::readTemperatureCForIndex.
          */
         void requestTemperatures(void);
 
         /**
-         * Read measured temperature from a sensor connected to the bus.
+         * @brief Read measured temperature from a sensor connected to the bus.
          * This method will block until measurement is complete (if not complete already).
          *
          * @param index The index of the desired sensor (between 0 and getDeviceCount())
          * @return measured temperature, or -127.0 if communication with the sensor failed.
          */
-        float readTemperatureForIndex(uint8_t index);
+        float readTemperatureCForIndex(uint8_t index);
 
         /**
          * Check if temperature measurement finished in the first connected sensor (index 0).
          *
          * @return true if last requested temperature measurement is complete, false otherwise
          */
-        bool measurementComplete(void);
+        bool isMeasurementComplete(void);
 
         /**
          * Number of temperature (DS18B20) sensors connected to the bus.

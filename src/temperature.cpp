@@ -79,13 +79,13 @@ void TemperatureSensorBus::requestTemperatures(void)
     _lastMeasureReq = millis();
 }
 
-float TemperatureSensorBus::readTemperatureForIndex(uint8_t index)
+float TemperatureSensorBus::readTemperatureCForIndex(uint8_t index)
 {
     _blockTillConversionComplete();
     return _sensors.getTempCByIndex(index);
 }
 
-bool TemperatureSensorBus::measurementComplete(void)
+bool TemperatureSensorBus::isMeasurementComplete(void)
 {
     return _sensors.isConversionComplete();
 }
