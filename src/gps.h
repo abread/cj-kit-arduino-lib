@@ -1,78 +1,112 @@
 #ifndef _CJKIT_GPS_H
 #define _CJKIT_GPS_H
 
+#include <Arduino.h>
 #include <TinyGPS++.h>
+#include "base.h"
 
-#define GPS_SERIAL Serial
-#define GPS_SERIAL_BAUD 9600
-
-class Gps
+namespace CJKit
 {
-private:
-    TinyGPSPlus _parser;
-    unsigned long _lastNewMessage = 0;
-
-public:
-    void setup()
+    /**
+     * Serial U(S)ART-based GPS device.
+     *
+     * Optionally used in CanSat Júnior, particularly in the context of an high height launch.
+     * Users must call begin before any other method and periodically call Gps::parsePending to
+     * process and parse incoming data from the Gps. Refer to CJKit::xdelay to hook this function
+     * into your program's idle times.
+     * The serial interface MUST not receive non-GPS data, and should not be used to send data while
+     * the GPS is connected to not risk changing its configuration accidentally.
+     * Accessor methods report the latest processed information from the GPS device.
+     *
+     * This library supports all UART-based GPS devices supported by the TinyGPS++ library.
+     *
+     * @param GpsSerial GPS Serial interface, defaults to the one available in your kit.
+     */
+    template <HardwareSerial &GpsSerial = GPS_SERIAL>
+    class Gps
     {
-        GPS_SERIAL.begin(GPS_SERIAL_BAUD);
+    private:
+        /// @brief Internal instance of NMEA message parser.
+        TinyGPSPlus _parser;
 
-        // try to get some info right at the start
-        parsePending();
-    }
+    public:
+        /// @brief Maximum bytes processed per batch in Gps::parsePending.
+        const uint8_t PARSE_MAX_BATCH_SIZE = 128;
 
-    void parsePending()
-    {
-        while (GPS_SERIAL.available())
-        {
-            _parser.encode(GPS_SERIAL.read());
-        }
-    }
+        /**
+         * @brief Initializes GPS Serial/U(S)ART interface and processes a limited number of messages.
+         * Must be called exactly once before any other method.
+         *
+         * Refer to parsePending for the limitations of the timeout mechanism.
+         *
+         * @param baudRate GPS Serial interface baud rate, defaults to the GPS device to be used with your kit
+         * @param parsePendingTimeoutMs Maximum time to spend processing incoming messages before returning (in ms), defaults to 1000ms.
+         */
+        void begin(unsigned long baudRate = GPS_BAUD_RATE, unsigned long parsePendingTimeoutMs = 1000);
 
-    double latitude()
-    {
-        return _parser.location.lat();
-    }
+        /**
+         * @brief Accept and parse incoming GPS data within a configurable timeout.
+         * The timeout mechanism is not precise: this method processes data in batches of Gps::PARSE_MAX_BATCH_SIZE
+         * bytes and the timeout only prevents the next batch from being processed.
+         *
+         * @param parsePendingTimeoutMs Timeout in ms, defaults to 250ms
+         */
+        void parsePending(unsigned long parsePendingTimeoutMs = 250);
 
-    double longitude()
-    {
-        return _parser.location.lng();
-    }
+        /**
+         * @brief Last received latitude in degrees.
+         */
+        double latitudeDeg();
 
-    unsigned long positionAge()
-    {
-        return _parser.location.age();
-    }
+        /**
+         * @brief Last received longitude in degrees.
+         */
+        double longitudeDeg();
 
-    double courseDeg()
-    {
-        return _parser.course.deg();
-    }
+        /**
+         * @brief UTC time of the last received latitude and longitude.
+         */
+        uint32_t positionAge();
 
-    unsigned long courseAge()
-    {
-        return _parser.course.age();
-    }
+        /**
+         * @brief Last received course in degrees.
+         */
+        double courseDeg();
 
-    double speedMps()
-    {
-        return _parser.speed.mps();
-    }
+        /**
+         * @brief UTC time of the last received course.
+         */
+        uint32_t courseAge();
 
-    unsigned long speedAge()
-    {
-        return _parser.speed.age();
-    }
+        /**
+         * @brief Last received speed in meters per second.
+         */
+        double speedMps();
 
-    double altitudeMeters()
-    {
-        return _parser.altitude.meters();
-    }
+        /**
+         * @brief UTC time of the last received speed.
+         */
+        uint32_t speedAge();
 
-    unsigned long altitudeAge()
-    {
-        return _parser.altitude.age();
-    }
-} gps;
+        /**
+         * @brief Last received altitude in meters.
+         */
+        double altitudeM();
+
+        /**
+         * @brief UTC time of the last received altitude.
+         */
+        uint32_t altitudeAge();
+
+        /**
+         * @brief UNSTABLE INTERFACE: Read-only reference to the internal parsing library instance.
+         *
+         * Internal parsing library may be changed without notice.
+         *
+         * @return const-reference to the internal parsing library.
+         */
+        TinyGPSPlus const &internalParser() const;
+    };
+}
 
 #endif
