@@ -17,16 +17,11 @@ namespace CJKit
      *
      * Users must call the TemperatureSensorBus::begin exactly once before any other methods.
      * Temperature measurements are performed asynchronously: users must call TemperatureSensorBus::requestTemperatures
-     * to start a measurement on all sensors connected to the bus. Afterwards, they can call TemperatureSensorBus::readTemperatureCForIndex
+     * to start a measurement on all sensors connected to the bus. Afterwards, they can call TemperatureSensorBus::temperatureCForIndex
      * to read the temperature from a sensor.
      */
     class TemperatureSensorBus
     {
-        /**
-         * The longest time we will wait for a DS18B20 sensor to signal its measurement is ready.
-         */
-        const unsigned long DS18B20_MAX_CONVERSION_TIMEOUT = 750; /* from library */
-
     private:
         /// @brief OneWire bus where temperature sensors are connected
         OneWire _bus;
@@ -41,6 +36,11 @@ namespace CJKit
         void _blockTillConversionComplete(void);
 
     public:
+        /**
+         * The longest time we will wait for a DS18B20 sensor to signal its measurement is ready.
+         */
+        const unsigned long DS18B20_MAX_CONVERSION_TIMEOUT = 750; /* from library */
+
         /**
          * Constructs a new temperature sensor bus.
          * Users must call begin exactly once before performing measurements.
@@ -73,7 +73,7 @@ namespace CJKit
          * Starts a new temperature measurement on all sensors connected to the bus.
          *
          * Refer to the datasheet for measurement duration.
-         * The temperature can be read from each sensor with TemperatureSensorBus::readTemperatureCForIndex.
+         * The temperature can be read from each sensor with TemperatureSensorBus::temperatureCForIndex.
          */
         void requestTemperatures(void);
 
@@ -81,10 +81,10 @@ namespace CJKit
          * @brief Read measured temperature from a sensor connected to the bus.
          * This method will block until measurement is complete (if not complete already).
          *
-         * @param index The index of the desired sensor (between 0 and getDeviceCount())
+         * @param index The index of the desired sensor (between 0 and deviceCount())
          * @return measured temperature, or -127.0 if communication with the sensor failed.
          */
-        float readTemperatureCForIndex(uint8_t index);
+        float temperatureCForIndex(uint8_t index);
 
         /**
          * Check if temperature measurement finished in the first connected sensor (index 0).
@@ -99,7 +99,7 @@ namespace CJKit
          *
          * @return Number of temperature sensors connected to the bus.
          */
-        uint8_t getDeviceCount(void);
+        uint8_t deviceCount(void);
     };
 }
 

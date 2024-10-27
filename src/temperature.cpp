@@ -53,7 +53,7 @@ bool TemperatureSensorBus::setResolution(uint8_t res)
 
     res = constrain(res, 9, 12);
     DeviceAddress deviceAddress;
-    for (uint8_t i = 0; i < _sensors.getDeviceCount(); i++)
+    for (uint8_t i = 0; i < _sensors.deviceCount(); i++)
     {
         if (_sensors.getAddress(deviceAddress, i))
         {
@@ -79,7 +79,7 @@ void TemperatureSensorBus::requestTemperatures(void)
     _lastMeasureReq = millis();
 }
 
-float TemperatureSensorBus::readTemperatureCForIndex(uint8_t index)
+float TemperatureSensorBus::temperatureCForIndex(uint8_t index)
 {
     _blockTillConversionComplete();
     return _sensors.getTempCByIndex(index);
@@ -90,7 +90,7 @@ bool TemperatureSensorBus::isMeasurementComplete(void)
     return _sensors.isConversionComplete();
 }
 
-uint8_t TemperatureSensorBus::getDeviceCount(void)
+uint8_t TemperatureSensorBus::deviceCount(void)
 {
-    return _sensors.getDeviceCount();
+    return _sensors.deviceCount();
 }

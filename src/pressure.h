@@ -17,6 +17,7 @@ namespace CJKit
      */
     class Pressure
     {
+    private:
         Adafruit_BMP085 _bmp;
 
     public:
@@ -39,14 +40,14 @@ namespace CJKit
          *
          * @returns Latest measured pressure in hPa.
          */
-        int32_t readPressureHPa();
+        int32_t pressureHPa();
 
         /**
          * @brief Read latest measured temperature from sensor in ºC.
          *
          * @returns Latest measured temperature in ºC.
          */
-        float readTemperatureC();
+        float temperatureC();
     };
 
 }

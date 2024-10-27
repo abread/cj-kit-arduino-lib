@@ -14,13 +14,13 @@ bool Pressure::begin(uint8_t mode, TwoWire *wire)
     return ok;
 }
 
-int32_t Pressure::readPressureHPa(void)
+int32_t Pressure::pressureHPa(void)
 {
     _bmp.readTemperature(); // TODO: check if it works without this call (it should)
     return _bmp.readPressure();
 }
 
-float Pressure::readTemperatureC(void)
+float Pressure::temperatureC(void)
 {
     return _bmp.readTemperature();
 }
