@@ -35,7 +35,8 @@ namespace CJKit
     const uint8_t BUZZER_PIN = 5;
     const uint8_t RADIO_SS_PIN = 10;
     // const uint8_t RADIO_IRQ_PIN = ?; // version dependent
-    const HardwareSerial &GPS_SERIAL = Serial;
+    // HardwareSerial & const GPS_SERIAL = Serial; // Arduino dependent
+    const unsigned long GPS_BAUD_RATE = 9600;
 
 #if CJKIT_VERSION == 0
     const uint8_t RADIO_IRQ_PIN = 5;
@@ -43,6 +44,15 @@ namespace CJKit
     const uint8_t RADIO_IRQ_PIN = 3;
 #else
 #error "LIBRARY BUG: unsupported kit version in RADIO_IRQ_PIN"
+#endif
+
+#ifdef ARDUINO_AVR_NANO_EVERY
+    HardwareSerial &const GPS_SERIAL = Serial1;
+#else
+#ifndef ARDUINO_AVR_NANO
+#warning "unsupported Arduino board kind. setting same settings as if for Arduino Nano (ATmega328P)"
+#endif
+    HardwareSerial &const GPS_SERIAL = Serial;
 #endif
 
 #if CJKIT_VERSION == 2
