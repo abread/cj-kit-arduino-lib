@@ -53,7 +53,7 @@ bool TemperatureSensorBus::setResolution(uint8_t res)
 
     res = constrain(res, 9, 12);
     DeviceAddress deviceAddress;
-    for (uint8_t i = 0; i < _sensors.deviceCount(); i++)
+    for (uint8_t i = 0; i < _sensors.getDeviceCount(); i++)
     {
         if (_sensors.getAddress(deviceAddress, i))
         {
@@ -92,5 +92,5 @@ bool TemperatureSensorBus::isMeasurementComplete(void)
 
 uint8_t TemperatureSensorBus::deviceCount(void)
 {
-    return _sensors.deviceCount();
+    return _sensors.getDeviceCount();
 }
