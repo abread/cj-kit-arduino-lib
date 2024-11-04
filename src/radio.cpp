@@ -3,9 +3,8 @@
 using namespace CJKit;
 
 template <uint8_t OWN_NODE_ID, uint8_t DEST_NODE_ID, uint8_t NET_ID>
-class StreamedRadio : public BufferedPrint<MAX_BUFFER_SIZE>
+class StreamedRadio : public BufferedPrint<RADIO_PAYLOAD_MAX_SIZE>
 {
-public:
     StreamedRadio(uint8_t slaveSelectPin, uint8_t interruptPin, bool isRFM69HW, SPIClass *spi) : _radio(slaveSelectPin, interruptPin, isRFM69HW, spi) {}
 
     bool begin(uint8_t freqBand)
@@ -25,6 +24,11 @@ public:
     void setFrequency(uint32_t freq)
     {
         _radio.setFrequency(freq);
+    }
+
+    void setEncryptionKey(uint8_t const key[ENCRYPTION_KEY_SIZE])
+    {
+        _radio.encrypt(key);
     }
 
     void write_unbuffered(uint8_t const *buf, int size)
