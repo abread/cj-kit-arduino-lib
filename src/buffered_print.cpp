@@ -52,22 +52,21 @@ public:
         return bufferSpace();
     }
 
-    size_t print(double d, int n = 5)
+    // The following methods are (re)declared in BufferedPrint just to set a different default
+    // precision. The logic is exactly the same as the original Print::print/println.
+    size_t print(double d, int n)
     {
         return Print::print(d, n);
     }
-
-    size_t println(double d, int n = 5)
+    size_t println(double d, int n)
     {
         return Print::println(d, n);
     }
-
-    size_t print(float f, int n = 5)
+    size_t print(float f, int n)
     {
         return Print::print(f, n);
     }
-
-    size_t println(float f, int n = 5)
+    size_t println(float f, int n)
     {
         return Print::println(f, n);
     }

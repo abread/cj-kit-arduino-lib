@@ -2,16 +2,13 @@
 
 using namespace CJKit;
 
-template <uint8_t OWN_NODE_ID = 1, uint8_t DEST_NODE_ID = 2, uint8_t NET_ID = 100>
+template <uint8_t OWN_NODE_ID, uint8_t DEST_NODE_ID, uint8_t NET_ID>
 class StreamedRadio : public BufferedPrint<MAX_BUFFER_SIZE>
 {
 public:
-    StreamedRadio(uint8_t slaveSelectPin = RADIO_SS_PIN, uint8_t interruptPin = RADIO_IRQ_PIN, bool isRFM69HW = false, SPIClass *spi = nullptr) : _radio(slaveSelectPin, interruptPin, isRFM69HW, spi) {}
+    StreamedRadio(uint8_t slaveSelectPin, uint8_t interruptPin, bool isRFM69HW, SPIClass *spi) : _radio(slaveSelectPin, interruptPin, isRFM69HW, spi) {}
 
-    /**
-     *
-     */
-    bool begin(uint8_t freqBand = RF69_433MHZ)
+    bool begin(uint8_t freqBand)
     {
         if (!_radio.initialize(RF69_433MHZ, _nodeId, _netId))
         {
@@ -25,17 +22,11 @@ public:
         return true;
     }
 
-    /**
-     *
-     */
     void setFrequency(uint32_t freq)
     {
         _radio.setFrequency(freq);
     }
 
-    /**
-     *
-     */
     void write_unbuffered(uint8_t const *buf, int size)
     {
         // TODO: be smart about logging

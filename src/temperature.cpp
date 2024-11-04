@@ -7,10 +7,7 @@
 
 using namespace CJKit;
 
-TemperatureSensorBus::TemperatureSensorBus(uint8_t busPin = DS18B20_BUS_PIN) : _bus(busPin),
-                                                                               _sensors(&_bus)
-{
-}
+TemperatureSensorBus::TemperatureSensorBus(uint8_t busPin) : _bus(busPin), _sensors(&_bus) {}
 
 void TemperatureSensorBus::_blockTillConversionComplete(void)
 {

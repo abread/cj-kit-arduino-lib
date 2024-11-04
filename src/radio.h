@@ -9,6 +9,9 @@
 
 namespace CJKit
 {
+    /**
+     *
+     */
     template <uint8_t OWN_NODE_ID = 1, uint8_t DEST_NODE_ID = 2, uint8_t NET_ID = 100>
     class StreamedRadio : public BufferedPrint<MAX_BUFFER_SIZE>
     {
