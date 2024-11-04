@@ -5,13 +5,13 @@ using namespace CJKit;
 
 bool Pressure::begin(uint8_t mode, TwoWire *wire)
 {
-    bool ok = _bmp.begin(mode, wire);
-    if (!ok)
+    if (!_bmp.begin(mode, wire))
     {
         // TODO: log
+        return false;
     }
 
-    return ok;
+    return true;
 }
 
 int32_t Pressure::pressureHPa(void)

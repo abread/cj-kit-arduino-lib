@@ -21,7 +21,7 @@ namespace CJKit
         Adafruit_BMP085 _bmp;
 
     public:
-        Pressure();
+        Pressure(void);
 
         /**
          * @brief Connects to and initializes pressure sensor.
@@ -40,14 +40,14 @@ namespace CJKit
          *
          * @returns Latest measured pressure in hPa.
          */
-        int32_t pressureHPa();
+        int32_t pressureHPa(void);
 
         /**
          * @brief Read latest measured temperature from sensor in ºC.
          *
          * @returns Latest measured temperature in ºC.
          */
-        float temperatureC();
+        float temperatureC(void);
     };
 
 }

@@ -62,10 +62,10 @@ namespace CJKit
     const uint8_t LED_D4_PIN = 9;
 #endif
 
-    typedef void(IdleTask)();
+    typedef void(IdleTask)(void);
 
-    IdleTask *getXdelayIdleTask();
-    IdleTask *clearXdelayIdleTask();
+    IdleTask *getXdelayIdleTask(void);
+    IdleTask *clearXdelayIdleTask(void);
     IdleTask *setXdelayIdleTask(IdleTask *task);
 
     const unsigned long XDELAY_MAX_INTERMEDIATE_DELAY_MS = 250;

@@ -4,12 +4,12 @@ namespace CJKit
 {
     static IdleTask *__xdelay_idleTask = nullptr;
 
-    IdleTask *getXdelayIdleTask()
+    IdleTask *getXdelayIdleTask(void)
     {
         return __xdelay_idleTask;
     }
 
-    IdleTask *clearXdelayIdleTask()
+    IdleTask *clearXdelayIdleTask(void)
     {
         return setXdelayIdleTask(nullptr);
     }

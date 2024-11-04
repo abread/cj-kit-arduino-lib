@@ -56,47 +56,47 @@ namespace CJKit
         /**
          * @brief Last received latitude in degrees.
          */
-        double latitudeDeg();
+        double latitudeDeg(void);
 
         /**
          * @brief Last received longitude in degrees.
          */
-        double longitudeDeg();
+        double longitudeDeg(void);
 
         /**
          * @brief UTC time of the last received latitude and longitude.
          */
-        uint32_t positionAge();
+        uint32_t positionAge(void);
 
         /**
          * @brief Last received course in degrees.
          */
-        double courseDeg();
+        double courseDeg(void);
 
         /**
          * @brief UTC time of the last received course.
          */
-        uint32_t courseAge();
+        uint32_t courseAge(void);
 
         /**
          * @brief Last received speed in meters per second.
          */
-        double speedMps();
+        double speedMps(void);
 
         /**
          * @brief UTC time of the last received speed.
          */
-        uint32_t speedAge();
+        uint32_t speedAge(void);
 
         /**
          * @brief Last received altitude in meters.
          */
-        double altitudeM();
+        double altitudeM(void);
 
         /**
          * @brief UTC time of the last received altitude.
          */
-        uint32_t altitudeAge();
+        uint32_t altitudeAge(void);
 
         /**
          * @brief UNSTABLE INTERFACE: Read-only reference to the internal parsing library instance.
@@ -105,7 +105,7 @@ namespace CJKit
          *
          * @return const-reference to the internal parsing library.
          */
-        TinyGPSPlus const &internalParser() const;
+        TinyGPSPlus const &internalParser(void) const;
     };
 }
 

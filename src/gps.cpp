@@ -27,47 +27,47 @@ public:
         }
     }
 
-    double latitudeDeg()
+    double latitudeDeg(void)
     {
         return _parser.location.lat();
     }
 
-    double longitudeDeg()
+    double longitudeDeg(void)
     {
         return _parser.location.lng();
     }
 
-    unsigned long positionAge()
+    unsigned long positionAge(void)
     {
         return _parser.location.age();
     }
 
-    double courseDeg()
+    double courseDeg(void)
     {
         return _parser.course.deg();
     }
 
-    unsigned long courseAge()
+    unsigned long courseAge(void)
     {
         return _parser.course.age();
     }
 
-    double speedMps()
+    double speedMps(void)
     {
         return _parser.speed.mps();
     }
 
-    unsigned long speedAge()
+    unsigned long speedAge(void)
     {
         return _parser.speed.age();
     }
 
-    double altitudeM()
+    double altitudeM(void)
     {
         return _parser.altitude.meters();
     }
 
-    unsigned long altitudeAge()
+    unsigned long altitudeAge(void)
     {
         return _parser.altitude.age();
     }
