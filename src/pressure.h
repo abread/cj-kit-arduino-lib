@@ -36,11 +36,11 @@ namespace CJKit
         bool begin(uint8_t mode = BMP085_ULTRAHIGHRES, TwoWire *wire = &Wire);
 
         /**
-         * @brief Read latest measured pressure from sensor in hPa.
+         * @brief Read latest measured pressure from sensor in Pa.
          *
-         * @returns Latest measured pressure in hPa.
+         * @returns Latest measured pressure in Pa.
          */
-        int32_t pressureHPa(void);
+        int32_t pressurePa(void);
 
         /**
          * @brief Read latest measured temperature from sensor in ºC.

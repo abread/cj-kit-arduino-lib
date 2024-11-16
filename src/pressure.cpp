@@ -14,7 +14,7 @@ bool Pressure::begin(uint8_t mode, TwoWire *wire)
     return true;
 }
 
-int32_t Pressure::pressureHPa(void)
+int32_t Pressure::pressurePa(void)
 {
     _bmp.readTemperature(); // TODO: check if it works without this call (it should)
     return _bmp.readPressure();
