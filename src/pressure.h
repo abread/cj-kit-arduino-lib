@@ -21,7 +21,7 @@ namespace CJKit
         Adafruit_BMP085 _bmp;
 
     public:
-        Pressure(void);
+        Pressure(void) {}
 
         /**
          * @brief Connects to and initializes pressure sensor.
@@ -33,24 +33,39 @@ namespace CJKit
          * @param wire The I2C interface to use, defaults to Wire.
          * @return Returns true if successful, false otherwise.
          */
-        bool begin(uint8_t mode = BMP085_ULTRAHIGHRES, TwoWire *wire = &Wire);
+        bool begin(uint8_t mode = BMP085_ULTRAHIGHRES, TwoWire *wire = &Wire)
+        {
+            if (!_bmp.begin(mode, wire))
+            {
+                // TODO: log
+                return false;
+            }
+
+            return true;
+        }
 
         /**
          * @brief Read latest measured pressure from sensor in Pa.
          *
          * @returns Latest measured pressure in Pa.
          */
-        int32_t pressurePa(void);
+        int32_t pressurePa(void)
+        {
+            _bmp.readTemperature(); // TODO: check if it works without this call (it should)
+            return _bmp.readPressure();
+        }
 
         /**
          * @brief Read latest measured temperature from sensor in ºC.
          *
          * @returns Latest measured temperature in ºC.
          */
-        float temperatureC(void);
+        float temperatureC(void)
+        {
+            return _bmp.readTemperature();
+        }
     };
 
 }
-
 
 #endif

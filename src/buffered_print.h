@@ -11,7 +11,7 @@ namespace CJKit
      * until the buffer is full or BufferedPrint::flush is called. At that point, buffer contents
      * will be written using the overriden BufferedPrint::write_unbuffered method.
      */
-    template <int BUFFER_SIZE>
+    template <size_t BUFFER_SIZE>
     class BufferedPrint : public Print
     {
     private:
@@ -31,18 +31,52 @@ namespace CJKit
         /**
          * @brief Remaining free space in the buffer.
          */
-        int bufferSpace(void) const;
+        size_t bufferSpace(void) const
+        {
+            return BUFFER_SIZE - _buffer_len;
+        }
 
         /**
          * @brief Flushes buffer contents (if not empty), writing them to the underlying output and clearing
          * the buffer.
          */
-        void flush(void);
+        void flush(void)
+        {
+            if (_buffer_len == 0)
+            {
+                return;
+            }
 
-        // TODO: do I need the override keyword?
-        override size_t write(uint8_t const *payload, int len);
-        override size_t write(uint8_t c);
-        override int availableForWrite(void) const;
+            write_unbuffered(_buffer, _buffer_len);
+            _buffer_len = 0;
+        }
+
+        size_t write(uint8_t const *buffer, size_t size) final
+        {
+            size_t i = 0;
+            while (i < size)
+            {
+                if (bufferSpace() == 0)
+                {
+                    flush();
+                }
+
+                size_t sz = min(bufferSpace(), size - i);
+                memcpy(_buffer + _buffer_len, buffer + i, sz);
+                i += sz;
+                _buffer_len += sz;
+            }
+
+            return size;
+        }
+        size_t write(uint8_t b) final
+        {
+            return write(&b, 1);
+        }
+        int availableForWrite(void) final
+        {
+            return bufferSpace();
+        }
 
         // extra decimal places for floating point
         // the next declarations will shadow Print::print and Print::println, so we must bring them
@@ -50,10 +84,22 @@ namespace CJKit
         using Print::print;
         using Print::println;
 
-        override size_t print(double d, int n = 5);
-        override size_t println(double d, int n = 5);
-        override size_t print(float f, int n = 5);
-        override size_t println(float f, int n = 5);
+        size_t print(double d, int n = 5)
+        {
+            return Print::print(d, n);
+        }
+        size_t println(double d, int n = 5)
+        {
+            return Print::print(d, n);
+        }
+        size_t print(float f, int n = 5)
+        {
+            return Print::println(f, n);
+        }
+        size_t println(float f, int n = 5)
+        {
+            return Print::println(f, n);
+        }
     };
 }
 

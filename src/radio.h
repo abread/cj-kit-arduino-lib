@@ -1,11 +1,12 @@
 #ifndef _CJKIT_RADIO_H
 #define _CJKIT_RADIO_H
 
-#include "base.h"
-#include "buffered_print.h"
+#include <Arduino.h>
 #include <SPIFlash.h>
 #include <RFM69.h>
 #include <RFM69_ATC.h>
+#include "base.h"
+#include "buffered_print.h"
 
 namespace CJKit
 {
@@ -39,8 +40,14 @@ namespace CJKit
         RFM69_ATC _radio;
 
     protected:
-        // TODO: override keyword?
-        override void write_unbuffered(uint8_t const *buf, int size);
+        void write_unbuffered(uint8_t const *buf, int size) final
+        {
+            // TODO: be smart about logging
+            Serial.print("saída rádio: ");
+            Serial.write(buf, size);
+            Serial.println();
+            _radio.send(DEST_NODE_ID, buf, size);
+        }
 
     public:
         /**
@@ -53,7 +60,7 @@ namespace CJKit
          * @param isRFM69HW - True if radio is a RFM69HW, false otherwise.
          * @param spi - SPI interface where radio is connected. Use nullptr for default Arduino SPI interface.
          */
-        StreamedRadio(uint8_t slaveSelectPin = RADIO_SS_PIN, uint8_t interruptPin = RADIO_IRQ_PIN, bool isRFM69HW = false, SPIClass *spi = nullptr);
+        StreamedRadio(uint8_t slaveSelectPin = RADIO_SS_PIN, uint8_t interruptPin = RADIO_IRQ_PIN, bool isRFM69HW = false, SPIClass *spi = nullptr) : _radio(slaveSelectPin, interruptPin, isRFM69HW, spi) {}
 
         /**
          * Initialize radio device.
@@ -63,14 +70,31 @@ namespace CJKit
          * @param freqBand - Radio frequency band (see RFM69 library documentation).
          * @returns True if initialization is successful, false otherwise.
          */
-        bool begin(uint8_t freqBand = RF69_433MHZ);
+        bool begin(uint8_t freqBand = RF69_433MHZ)
+        {
+            if (!_radio.initialize(freqBand, OWN_NODE_ID, NET_ID))
+            {
+                // TODO: debug log
+                return false;
+            }
+            _radio.setHighPower();
+            _radio.encrypt(nullptr);
+            // #if CJKIT_VERSION != 0 && CJKIT_VERSION <= 2
+            _radio.setPowerDBm(0);
+            // #endif
+
+            return true;
+        }
 
         /**
          * Set radio operating frequency (for transmission and reception).
          *
          * @param freq - Operating frequency in Hz.
          */
-        void setFrequency(uint32_t freq);
+        void setFrequency(uint32_t freq)
+        {
+            _radio.setFrequency(freq);
+        }
 
         /**
          * Set radio encryption key (use nullptr to disable encryption).
@@ -80,7 +104,10 @@ namespace CJKit
          *
          * @param key - Encryption key.
          */
-        void setEncryptionKey(uint8_t const key[ENCRYPTION_KEY_SIZE]);
+        void setEncryptionKey(uint8_t const key[ENCRYPTION_KEY_SIZE])
+        {
+            _radio.encrypt((char const *)&key[0]);
+        }
     };
 }
 

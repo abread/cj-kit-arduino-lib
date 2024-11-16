@@ -1,6 +1,9 @@
 #ifndef _CJKIT_GPS_H
 #define _CJKIT_GPS_H
 
+// TODO: research if we can do this without macros (e.g. error out on GPS class use, but always have it defined)
+#ifdef CJKIT_ENABLE_GPS
+
 #include <Arduino.h>
 #include <TinyGPS++.h>
 #include "base.h"
@@ -18,14 +21,14 @@ namespace CJKit
      * the GPS is connected to not risk changing its configuration accidentally.
      * Accessor methods report the latest processed information from the GPS device.
      *
-     * This library supports all UART-based GPS devices supported by the TinyGPS++ library.
-     *
-     * @param GpsSerial GPS Serial interface, defaults to the one available in your kit.
+     * This library supports all U(S)ART-based GPS devices supported by the TinyGPS++ library.
      */
-    template <HardwareSerial &GpsSerial = GPS_SERIAL>
     class Gps
     {
     private:
+        /// @brief Stream of incoming NMEA messages from GPS (e.g. Serial U(S)ART).
+        Stream &_nmeaStream;
+
         /// @brief Internal instance of NMEA message parser.
         TinyGPSPlus _parser;
 
@@ -34,69 +37,104 @@ namespace CJKit
         const uint8_t PARSE_MAX_BATCH_SIZE = 128;
 
         /**
-         * @brief Initializes GPS Serial/U(S)ART interface and processes a limited number of messages.
-         * Must be called exactly once before any other method.
-         *
-         * Refer to parsePending for the limitations of the timeout mechanism.
-         *
-         * @param baudRate GPS Serial interface baud rate, defaults to the GPS device to be used with your kit
-         * @param parsePendingTimeoutMs Maximum time to spend processing incoming messages before returning (in ms), defaults to 1000ms.
+         * Construct a new Gps interface from an existing stream of incoming NMEA messages.
+         * @param nmeaStream Stream of incoming NMEA messages, defaults to the GPS device to be used with your kit (which is NOT INITIALIZED BY THIS METHOD).
          */
-        void begin(unsigned long baudRate = GPS_BAUD_RATE, unsigned long parsePendingTimeoutMs = 1000);
+        Gps(Stream &nmeaStream = GPS_SERIAL) : _nmeaStream(nmeaStream) {}
 
         /**
-         * @brief Accept and parse incoming GPS data within a configurable timeout.
-         * The timeout mechanism is not precise: this method processes data in batches of Gps::PARSE_MAX_BATCH_SIZE
-         * bytes and the timeout only prevents the next batch from being processed.
+         * @brief Accept and parse incoming GPS data within a configurable soft deadline.
+         * The deadline mechanism is not precise ("soft"): this method processes data in batches of Gps::PARSE_MAX_BATCH_SIZE
+         * bytes and the deadline only prevents the next batch from being processed.
          *
-         * @param parsePendingTimeoutMs Timeout in ms, defaults to 250ms
+         * @param parsePendingTimeoutMs Deadline in ms, defaults to 250ms after millis()
          */
-        void parsePending(unsigned long parsePendingTimeoutMs = 250);
+        void parsePending(unsigned long parsePendingDeadlineMs)
+        {
+            while (millis() < parsePendingDeadlineMs)
+            {
+                for (uint8_t i = 0; i < PARSE_MAX_BATCH_SIZE && _nmeaStream.available(); i++)
+                {
+                    _parser.encode(_nmeaStream.read());
+                }
+            }
+        }
+        void parsePending()
+        {
+            parsePending(millis() + 250);
+        }
 
         /**
          * @brief Last received latitude in degrees.
          */
-        double latitudeDeg(void);
+        double latitudeDeg(void)
+        {
+            return _parser.location.lat();
+        }
 
         /**
          * @brief Last received longitude in degrees.
          */
-        double longitudeDeg(void);
+        double longitudeDeg(void)
+        {
+            return _parser.location.lng();
+        }
 
         /**
          * @brief UTC time of the last received latitude and longitude.
          */
-        uint32_t positionAge(void);
+        uint32_t positionAge(void)
+        {
+            return _parser.location.age();
+        }
 
         /**
          * @brief Last received course in degrees.
          */
-        double courseDeg(void);
+        double courseDeg(void)
+        {
+            return _parser.course.deg();
+        }
 
         /**
          * @brief UTC time of the last received course.
          */
-        uint32_t courseAge(void);
+        uint32_t courseAge(void)
+        {
+            return _parser.course.age();
+        }
 
         /**
          * @brief Last received speed in meters per second.
          */
-        double speedMps(void);
+        double speedMps(void)
+        {
+            return _parser.speed.mps();
+        }
 
         /**
          * @brief UTC time of the last received speed.
          */
-        uint32_t speedAge(void);
+        uint32_t speedAge(void)
+        {
+            return _parser.speed.age();
+        }
 
         /**
          * @brief Last received altitude in meters.
          */
-        double altitudeM(void);
+        double altitudeM(void)
+        {
+            return _parser.altitude.meters();
+        }
 
         /**
          * @brief UTC time of the last received altitude.
          */
-        uint32_t altitudeAge(void);
+        uint32_t altitudeAge(void)
+        {
+            return _parser.altitude.age();
+        }
 
         /**
          * @brief UNSTABLE INTERFACE: Read-only reference to the internal parsing library instance.
@@ -105,8 +143,12 @@ namespace CJKit
          *
          * @return const-reference to the internal parsing library.
          */
-        TinyGPSPlus const &internalParser(void) const;
+        TinyGPSPlus const &internalParser(void) const
+        {
+            return _parser;
+        }
     };
 }
 
+#endif
 #endif
