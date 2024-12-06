@@ -11,7 +11,7 @@
 #if CJKIT_VERSION == 0
 
 #ifndef ARDUINO_AVR_NANO_EVERY
-#error "CJ Kit v0 requires Arduino Nano Every"
+#warning "CJ Kit v0 is designed for Arduino Nano Every. Radio will likely NOT WORK for reception."
 #endif
 
 #elif CJKIT_VERSION == 1
