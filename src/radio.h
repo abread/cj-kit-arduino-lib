@@ -43,11 +43,12 @@ namespace CJKit
     class StreamedRadio : public BufferedPrint<RADIO_PAYLOAD_MAX_SIZE>
     {
     public:
-        static const uint8_t RADIO_FREQ_BAND = RF69_433MHZ;
+        /// Radio encryption key size (in bytes).
         static const uint8_t ENCRYPTION_KEY_SIZE = 16; // RFM69HCW uses AES128, which demands 128-bit (16-byte) keys, DO NOT CHANGE
 
     private:
         _CJKIT_RADIO_CLASS _radio;
+        static const uint8_t RADIO_FREQ_BAND = RF69_433MHZ;
 
     protected:
         void write_unbuffered(uint8_t const *buf, int size) final

@@ -17,7 +17,7 @@ namespace CJKit
      *
      * Users must call the TemperatureSensorBus::begin exactly once before any other methods.
      * Temperature measurements are performed asynchronously: users must call TemperatureSensorBus::requestTemperatures
-     * to start a measurement on all sensors connected to the bus. Afterwards, they can call TemperatureSensorBus::temperatureCForIndex
+     * to start a measurement on all sensors connected to the bus. Afterwards, they can call TemperatureSensorBus::readTemperatureCForIndex
      * to read the temperature from a sensor.
      */
     class TemperatureSensorBus
@@ -62,9 +62,7 @@ namespace CJKit
         }
 
     public:
-        /**
-         * The longest time we will wait for a DS18B20 sensor to signal its measurement is ready.
-         */
+        /// The longest time we will wait for a DS18B20 sensor to signal its measurement is ready.
         const unsigned long DS18B20_MAX_CONVERSION_TIMEOUT = 750; /* from library */
 
         /**
@@ -127,7 +125,7 @@ namespace CJKit
          * Starts a new temperature measurement on all sensors connected to the bus.
          *
          * Refer to the datasheet for measurement duration.
-         * The temperature can be read from each sensor with TemperatureSensorBus::temperatureCForIndex.
+         * The temperature can be read from each sensor with TemperatureSensorBus::readTemperatureCForIndex.
          */
         void requestTemperatures(void)
         {
@@ -142,7 +140,7 @@ namespace CJKit
          * @param index The index of the desired sensor (between 0 and deviceCount())
          * @return measured temperature, or -127.0 if communication with the sensor failed.
          */
-        float temperatureCForIndex(uint8_t index)
+        float readTemperatureCForIndex(uint8_t index)
         {
             _blockTillConversionComplete();
             return _sensors.getTempCByIndex(index);

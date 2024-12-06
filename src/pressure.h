@@ -49,7 +49,7 @@ namespace CJKit
          *
          * @returns Latest measured pressure in Pa.
          */
-        int32_t pressurePa(void)
+        int32_t readPressurePa(void)
         {
             _bmp.readTemperature(); // TODO: check if it works without this call (it should)
             return _bmp.readPressure();
@@ -60,7 +60,7 @@ namespace CJKit
          *
          * @returns Latest measured temperature in ºC.
          */
-        float temperatureC(void)
+        float readTemperatureC(void)
         {
             return _bmp.readTemperature();
         }
