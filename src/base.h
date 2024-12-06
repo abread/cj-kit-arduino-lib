@@ -36,7 +36,7 @@ namespace CJKit
     const uint8_t BUZZER_PIN = 5;
     const uint8_t RADIO_SS_PIN = 10;
     // const uint8_t RADIO_IRQ_PIN = ?; // version dependent
-    // HardwareSerial &GPS_SERIAL = Serial; // Arduino dependent
+    // HardwareSerial &GPS_SERIAL = Serial; // version/Arduino dependent
     const unsigned long GPS_BAUD_RATE = 9600;
 
 #if CJKIT_VERSION == 0

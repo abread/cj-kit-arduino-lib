@@ -13,6 +13,8 @@ namespace CJKit
     /**
      * Serial U(S)ART-based GPS device.
      *
+     * WARNING: Unstable interface. Use with caution.
+     *
      * Optionally used in CanSat Júnior, particularly in the context of an high height launch.
      * Users must call begin before any other method and periodically call Gps::parsePending to
      * process and parse incoming data from the Gps. Refer to CJKit::xdelay to hook this function
