@@ -29,7 +29,7 @@ namespace CJKit
      * To support use cases more advanced than what this library allows while retaining the convenience
      * of Print methods, users create a new class extending [BufferedPrint] with the desired functionality.
      */
-    template <uint8_t OWN_NODE_ID = 1, uint8_t DEST_NODE_ID = 2, uint8_t NET_ID = 100>
+    template <uint8_t OWN_NODE_ID = 0, uint8_t DEST_NODE_ID = 1, uint8_t NET_ID = 100>
     class StreamedRadio : public BufferedPrint<RADIO_PAYLOAD_MAX_SIZE>
     {
     public:

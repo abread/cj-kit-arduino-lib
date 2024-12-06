@@ -94,11 +94,11 @@ namespace CJKit
         }
         size_t print(float f, int n = 5)
         {
-            return Print::println(f, n);
+            return Print::print(f, n);
         }
         size_t println(float f, int n = 5)
         {
-            return Print::println(f, n);
+            return Print::print(f, n);
         }
     };
 }
