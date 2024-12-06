@@ -21,7 +21,7 @@ void setup() {
 
 // this will be run repeatedly after setup
 void loop() {
-  float t = temperatureBus.temperatureCForIndex(0);
+  float t = temperatureBus.readTemperatureCForIndex(0);
 
   Serial.print("Temperature (ºC): ");
   Serial.println(t);
