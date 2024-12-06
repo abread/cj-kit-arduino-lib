@@ -20,7 +20,7 @@
 
 namespace CJKit
 {
-    // @brief Maximum payload size in a radio packet.
+    /// Maximum payload size in a radio packet.
     static const uint8_t RADIO_PAYLOAD_MAX_SIZE = 61;
 
     /**
@@ -120,7 +120,8 @@ namespace CJKit
         }
 
         /**
-         * Underlying RFM69 radio device. WARNING: Unstable interface. Use with caution.
+         * Underlying RFM69 radio device.
+         * @deprecated Unstable interface. Use with caution.
          */
         _CJKIT_RADIO_CLASS &internalRadio()
         {

@@ -24,7 +24,7 @@ namespace CJKit
         Pressure(void) {}
 
         /**
-         * @brief Connects to and initializes pressure sensor.
+         * Connects to and initializes pressure sensor.
          * Must be called exactly once before any other method.
          *
          * Refer to sensor datasheet for the meaning of the various modes.
@@ -45,7 +45,7 @@ namespace CJKit
         }
 
         /**
-         * @brief Read latest measured pressure from sensor in Pa.
+         * Read latest measured pressure from sensor in Pa.
          *
          * @returns Latest measured pressure in Pa.
          */
@@ -56,7 +56,7 @@ namespace CJKit
         }
 
         /**
-         * @brief Read latest measured temperature from sensor in ºC.
+         * Read latest measured temperature from sensor in ºC.
          *
          * @returns Latest measured temperature in ºC.
          */
@@ -66,7 +66,8 @@ namespace CJKit
         }
 
         /**
-         * Internal Adafruit_BMP085 object. WARNING: Unstable interface. Use with caution.
+         * Internal Adafruit_BMP085 object.
+         * @deprecated Unstable interface. Use with caution.
          */
         Adafruit_BMP085 &internalBmp()
         {

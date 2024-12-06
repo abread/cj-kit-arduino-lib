@@ -23,16 +23,16 @@ namespace CJKit
     class TemperatureSensorBus
     {
     private:
-        /// @brief OneWire bus where temperature sensors are connected
+        /// OneWire bus where temperature sensors are connected
         OneWire _bus;
 
-        /// @brief Wrapper around bus for easy sensor interaction.
+        /// Wrapper around bus for easy sensor interaction.
         DallasTemperature _sensors;
 
-        /// @brief Latest measurement request time
+        /// Latest measurement request time
         unsigned long _lastMeasureReq = 0;
 
-        /// @brief Blocks until the first sensor in the bus reports its measurement to be complete.
+        /// Blocks until the first sensor in the bus reports its measurement to be complete.
         void _blockTillConversionComplete(void)
         {
             if (_lastMeasureReq == 0)
@@ -136,7 +136,7 @@ namespace CJKit
         }
 
         /**
-         * @brief Read measured temperature from a sensor connected to the bus.
+         * Read measured temperature from a sensor connected to the bus.
          * This method will block until measurement is complete (if not complete already).
          *
          * @param index The index of the desired sensor (between 0 and deviceCount())
@@ -170,7 +170,8 @@ namespace CJKit
         }
 
         /**
-         * Underlying OneWire bus object. WARNING: Unstable interface. Use with caution.
+         * Underlying OneWire bus object.
+         * @deprecated Unstable interface. Use with caution.
          */
         OneWire &internalBus()
         {
@@ -178,7 +179,8 @@ namespace CJKit
         }
 
         /**
-         * Underlying DallasTemperature sensors object. WARNING: Unstable interface. Use with caution.
+         * Underlying DallasTemperature sensors object.
+         * @deprecated Unstable interface. Use with caution.
          */
         DallasTemperature &internalSensors()
         {

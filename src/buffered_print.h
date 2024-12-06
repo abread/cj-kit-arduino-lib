@@ -29,7 +29,7 @@ namespace CJKit
 
     public:
         /**
-         * @brief Remaining free space in the buffer.
+         * Remaining free space in the buffer.
          */
         size_t bufferSpace(void) const
         {
@@ -37,7 +37,7 @@ namespace CJKit
         }
 
         /**
-         * @brief Flushes buffer contents (if not empty), writing them to the underlying output and clearing
+         * Flushes buffer contents (if not empty), writing them to the underlying output and clearing
          * the buffer.
          */
         void flush(void)

@@ -28,14 +28,14 @@ namespace CJKit
     class Gps
     {
     private:
-        /// @brief Stream of incoming NMEA messages from GPS (e.g. Serial U(S)ART).
+        /// Stream of incoming NMEA messages from GPS (e.g. Serial U(S)ART).
         Stream &_nmeaStream;
 
-        /// @brief Internal instance of NMEA message parser.
+        /// Internal instance of NMEA message parser.
         TinyGPSPlus _parser;
 
     public:
-        /// @brief Maximum bytes processed per batch in Gps::parsePending.
+        /// Maximum bytes processed per batch in Gps::parsePending.
         const uint8_t PARSE_MAX_BATCH_SIZE = 128;
 
         /**
@@ -45,7 +45,7 @@ namespace CJKit
         Gps(Stream &nmeaStream = GPS_SERIAL) : _nmeaStream(nmeaStream) {}
 
         /**
-         * @brief Accept and parse incoming GPS data within a configurable soft deadline.
+         * Accept and parse incoming GPS data within a configurable soft deadline.
          * The deadline mechanism is not precise ("soft"): this method processes data in batches of Gps::PARSE_MAX_BATCH_SIZE
          * bytes and the deadline only prevents the next batch from being processed.
          *
@@ -67,7 +67,7 @@ namespace CJKit
         }
 
         /**
-         * @brief Last received latitude in degrees.
+         * Last received latitude in degrees.
          */
         double latitudeDeg(void)
         {
@@ -75,7 +75,7 @@ namespace CJKit
         }
 
         /**
-         * @brief Last received longitude in degrees.
+         * Last received longitude in degrees.
          */
         double longitudeDeg(void)
         {
@@ -83,7 +83,7 @@ namespace CJKit
         }
 
         /**
-         * @brief UTC time of the last received latitude and longitude.
+         * UTC time of the last received latitude and longitude.
          */
         uint32_t positionAge(void)
         {
@@ -91,7 +91,7 @@ namespace CJKit
         }
 
         /**
-         * @brief Last received course in degrees.
+         * Last received course in degrees.
          */
         double courseDeg(void)
         {
@@ -99,7 +99,7 @@ namespace CJKit
         }
 
         /**
-         * @brief UTC time of the last received course.
+         * UTC time of the last received course.
          */
         uint32_t courseAge(void)
         {
@@ -107,7 +107,7 @@ namespace CJKit
         }
 
         /**
-         * @brief Last received speed in meters per second.
+         * Last received speed in meters per second.
          */
         double speedMps(void)
         {
@@ -115,7 +115,7 @@ namespace CJKit
         }
 
         /**
-         * @brief UTC time of the last received speed.
+         * UTC time of the last received speed.
          */
         uint32_t speedAge(void)
         {
@@ -123,7 +123,7 @@ namespace CJKit
         }
 
         /**
-         * @brief Last received altitude in meters.
+         * Last received altitude in meters.
          */
         double altitudeM(void)
         {
@@ -131,7 +131,7 @@ namespace CJKit
         }
 
         /**
-         * @brief UTC time of the last received altitude.
+         * UTC time of the last received altitude.
          */
         uint32_t altitudeAge(void)
         {
@@ -139,10 +139,11 @@ namespace CJKit
         }
 
         /**
-         * @brief UNSTABLE INTERFACE: Read-only reference to the internal parsing library instance.
+         * Read-only reference to the internal parsing library instance.
          *
          * Internal parsing library may be changed without notice.
          *
+         * @deprecated Unstable interface. Use with caution.
          * @return const-reference to the internal parsing library.
          */
         TinyGPSPlus const &internalParser(void) const
