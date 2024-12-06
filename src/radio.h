@@ -8,6 +8,16 @@
 #include "base.h"
 #include "buffered_print.h"
 
+#ifndef _CJKIT_RADIO_CLASS
+#if CJKIT_VERSION == 0
+#define _CJKIT_RADIO_CLASS RFM69_ATC
+#elif CJKIT_VERSION <= 2
+#define _CJKIT_RADIO_CLASS RFM69
+#else
+#error "unsupported kit version for radio"
+#endif
+#endif
+
 namespace CJKit
 {
     // @brief Maximum payload size in a radio packet.
@@ -37,7 +47,7 @@ namespace CJKit
         static const uint8_t ENCRYPTION_KEY_SIZE = 16; // RFM69HCW uses AES128, which demands 128-bit (16-byte) keys, DO NOT CHANGE
 
     private:
-        RFM69 _radio;
+        _CJKIT_RADIO_CLASS _radio;
 
     protected:
         void write_unbuffered(uint8_t const *buf, int size) final
@@ -79,9 +89,9 @@ namespace CJKit
             }
             _radio.setHighPower();
             _radio.encrypt(nullptr);
-            // #if CJKIT_VERSION != 0 && CJKIT_VERSION <= 2
+#if CJKIT_VERSION != 0 && CJKIT_VERSION <= 2
             _radio.setPowerDBm(5);
-            // #endif
+#endif
 
             return true;
         }
