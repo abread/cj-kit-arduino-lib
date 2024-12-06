@@ -118,6 +118,14 @@ namespace CJKit
         {
             _radio.encrypt((char const *)&key[0]);
         }
+
+        /**
+         * Underlying RFM69 radio device. WARNING: Unstable interface. Use with caution.
+         */
+        _CJKIT_RADIO_CLASS &internalRadio()
+        {
+            return _radio;
+        }
     };
 }
 

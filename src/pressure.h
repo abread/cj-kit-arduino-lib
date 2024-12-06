@@ -64,6 +64,14 @@ namespace CJKit
         {
             return _bmp.readTemperature();
         }
+
+        /**
+         * Internal Adafruit_BMP085 object. WARNING: Unstable interface. Use with caution.
+         */
+        Adafruit_BMP085 &internalBmp()
+        {
+            return _bmp;
+        }
     };
 
 }

@@ -168,6 +168,22 @@ namespace CJKit
         {
             return _sensors.getDeviceCount();
         }
+
+        /**
+         * Underlying OneWire bus object. WARNING: Unstable interface. Use with caution.
+         */
+        OneWire &internalBus()
+        {
+            return _bus;
+        }
+
+        /**
+         * Underlying DallasTemperature sensors object. WARNING: Unstable interface. Use with caution.
+         */
+        DallasTemperature &internalSensors()
+        {
+            return _sensors;
+        }
     };
 }
 
