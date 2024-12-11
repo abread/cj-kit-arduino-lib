@@ -24,4 +24,3 @@ void loop() {
 
   CJKit::xdelay(1000); // pause for 1s
 }
-

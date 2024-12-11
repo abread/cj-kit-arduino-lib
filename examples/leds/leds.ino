@@ -5,8 +5,9 @@
 void setup() {
   // Arduino Nano has a built-in LED, always
   pinMode(LED_BUILTIN, OUTPUT); // configure the LED pin as an output
- 
-#if CJKIT_VERSION >= 2 // this ensures the code within is only active when CJKIT_VERSION is defined to a value >= 2
+
+#if CJKIT_VERSION >= 2 // this ensures the code within is only active when
+                       // CJKIT_VERSION is defined to a value >= 2
   // The v2 kit also has 4 extra LEDs in the "Arduino PCB"
   pinMode(CJKit::LED_D1_PIN, OUTPUT); // LED marked as D1
   pinMode(CJKit::LED_D2_PIN, OUTPUT); // LED marked as D2
@@ -18,7 +19,7 @@ void setup() {
 // this will be run repeatedly after setup
 void loop() {
   // blink LEDs!
-  
+
   // turn them all off
   digitalWrite(LED_BUILTIN, LOW);
 #if CJKIT_VERSION >= 2
@@ -41,4 +42,3 @@ void loop() {
 
   CJKit::xdelay(1000); // leave them on for 1s
 }
-

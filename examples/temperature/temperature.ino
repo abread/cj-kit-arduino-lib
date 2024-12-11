@@ -12,10 +12,10 @@ void setup() {
     Serial.print("temperature: FAIL: sensor count ");
     Serial.print(temperatureBus.deviceCount());
     Serial.println(" != 1");
-  } else if (! temperatureBus.setResolution(9)) {
+  } else if (!temperatureBus.setResolution(9)) {
     Serial.println("temperature: FAIL: setResolution");
   }
-  
+
   temperatureBus.requestTemperatures();
 }
 
@@ -27,9 +27,9 @@ void loop() {
   Serial.println(t);
 
   // request new measurement before pausing the MCU
-  // this way the sensor will perform its duties while we wait instead of stalling us.
+  // this way the sensor will perform its duties while we wait instead of
+  // stalling us.
   temperatureBus.requestTemperatures();
- 
+
   CJKit::xdelay(1000); // sleep for 1s
 }
-

@@ -3,14 +3,15 @@
 
 // this will be run once at startup
 void setup() {
-  // configure pin where the (positive terminal of the) buzzer is attached as a digital output
+  // configure pin where the (positive terminal of the) buzzer is attached as a
+  // digital output
   pinMode(CJKit::BUZZER_PIN, OUTPUT);
 }
 
 // this will be run repeatedly after setup
 void loop() {
   // beep the buzzer!
-  
+
   // turn it off
   digitalWrite(CJKit::BUZZER_PIN, LOW);
 
@@ -21,4 +22,3 @@ void loop() {
 
   CJKit::xdelay(1000); // leave it on for 1s
 }
-
