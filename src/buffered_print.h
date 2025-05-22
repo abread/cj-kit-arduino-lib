@@ -70,9 +70,9 @@ public:
   using Print::println;
 
   size_t print(double d, int n = 5) { return Print::print(d, n); }
-  size_t println(double d, int n = 5) { return Print::print(d, n); }
+  size_t println(double d, int n = 5) { return Print::println(d, n); }
   size_t print(float f, int n = 5) { return Print::print(f, n); }
-  size_t println(float f, int n = 5) { return Print::print(f, n); }
+  size_t println(float f, int n = 5) { return Print::println(f, n); }
 };
 } // namespace CJKit
 
