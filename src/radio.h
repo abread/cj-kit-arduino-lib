@@ -11,8 +11,32 @@
 #ifndef _CJKIT_RADIO_CLASS
 #if CJKIT_VERSION == 0
 #define _CJKIT_RADIO_CLASS RFM69_ATC
-#elif CJKIT_VERSION <= 2
+#elif CJKIT_VERSION == 1
 #define _CJKIT_RADIO_CLASS RFM69
+#elif CJKIT_VERSION == 2
+
+// v2 kit's level shifter requires a slower SPI bus (still way faster than
+// anything we would transmit).
+#define _CJKIT_RADIO_CLASS RFM69SlowSpi
+class RFM69SlowSpi : public RFM69 {
+  public:
+
+    RFM69SlowSpi(uint8_t slaveSelectPin, uint8_t interruptPin, bool isRFM69HW, uint8_t interruptNum __attribute__((unused))) //interruptNum is now deprecated
+                : RFM69(slaveSelectPin, interruptPin, isRFM69HW) {}
+
+    RFM69SlowSpi(uint8_t slaveSelectPin=RF69_SPI_CS, uint8_t interruptPin=RF69_IRQ_PIN, bool isRFM69HW_HCW=false, SPIClass *spi=nullptr) : RFM69(slaveSelectPin, interruptPin, isRFM69HW_HCW, spi) {}
+
+    bool initialize(uint8_t freqBand, uint16_t nodeID, uint8_t networkID=1) {
+      bool result = RFM69::initialize(freqBand, nodeID, networkID);
+
+      // initialization goes okay with the 8MHz default, but sending data does not
+      // drop it down to 1MHz
+      _settings = SPISettings(1000000, MSBFIRST, SPI_MODE0);
+
+      return result;
+    }
+};
+
 #else
 #error "unsupported kit version for radio"
 #endif
