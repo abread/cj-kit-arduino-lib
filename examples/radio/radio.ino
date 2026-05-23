@@ -9,12 +9,6 @@ CJKit::StreamedRadio<> radio;
 void setup() {
   Serial.begin(9600);
 
-#if CJKIT_VERSION == 2
-  // v2 kit's level shifter requires a slower SPI bus (still way faster than
-  // anything we would transmit).
-  SPI.setClockDivider(SPI_CLOCK_DIV16);
-#endif
-
   if (radio.begin()) {
     radio.setFrequency(RADIO_FREQUENCY);
     Serial.println("radio: init OK");
